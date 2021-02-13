@@ -50,11 +50,29 @@ The form fields are:
 - **Session Mode**:
   This is the mode the peer is operating under:
   - **attendee**:
+    a person in a regular meeting, i.e., all attendees share their video
+    and audio to each other. This causes lots of WebRTC connections and
+    hence should be used for about 5-10 peers only. This is intended for
+    regular meeting participants.
   - **sender**:
+    a person in a broadcast meeting, i.e., all sender share only their
+    audio with each other and their video with just the director (in
+    lower-quality) and the receiver (in high-quality). This is intended
+    for presenters in a produced online event.
   - **follower**:
+    like **sender**, but without sharing video at all. This is intended
+    for assistents in a produced online event in order to observe the
+    senders.
   - **injector**:
+    like **follower**, but without even sharing audio at all. This is
+    intended for assistents in a produced online event in order to just
+    inject chat messages to the senders.
   - **receiver**:
+    the OBS Studio "Browser Source" receiving the video/audio stream
+    of a particular sender.
   - **director**:
+    the director of the online event in order to control
+    the senders and interact with the senders.
 
 - **Source URL**:
   This is your entry point.
