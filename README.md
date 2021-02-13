@@ -24,6 +24,23 @@ sessions with multiple presenters only. Broadcast sessions are like
 meetings, where presenters can hear but not see each other, to reduce
 the network bandwidth requirements of presenters.
 
+Installation
+------------
+
+There is no installation needed if you are using the Github URL
+https://rse.github.io/obs-ninja-trampoline/. If you want to
+use a different URL then copy the files [index.html](index.html)
+and [jquery.js](jquery.js) to your own website.
+
+Usage
+-----
+
+Go to [OBS.Ninja Trampoline](https://rse.github.io/obs-ninja-trampoline/)
+(or your own website hosting OBS.Ninja Trampoline) and fill out
+the form. Copy the "Source URL" (or press "OPEN") for accessing
+[OBS.Ninja](https://obs.ninja) with the underlying complex parameters based
+on your OBS.Ninja Trampoline simple form parameters.
+
 License
 -------
 
