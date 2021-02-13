@@ -24,7 +24,7 @@ sessions with multiple presenters only. Broadcast sessions are like
 meetings, where presenters can hear but not see each other, to reduce
 the network bandwidth requirements of presenters.
 
-Sneap Preview
+Sneak Preview
 -------------
 
 ![OBS.Ninja Trampoline](screenshot.png)
