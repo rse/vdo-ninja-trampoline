@@ -74,6 +74,23 @@ The form fields are:
     the director of the online event in order to control
     the senders and interact with the senders.
 
+- **Session Video**:
+  This is the video mode the peer is operating under, mapped onto the
+  `quality` and`videobitrate` parameters of OBS.Ninja.
+
+- **Session Audio**:
+  This is the audio mode the peer is operating under, mapped onto the
+  `stereo` and `audiobitrate` parameters of OBS.Ninja.
+
+- **Peer Id**:
+  This is the peer identifier, corresponding to the `view` and `push`
+  parameters of OBS.Ninja. It has to be locally unique to the room identifier.
+
+- **Peer Name**:
+  This is the peer name, corresponding to the `label` parameter of
+  OBS.Ninja. It can be an arbitrary name, but should explain the peer.
+  It is displayed to the director only.
+
 - **Source URL**:
   This is your entry point.
   Copy this URL for accesssing OBS.Ninja through the clean, intuitive
