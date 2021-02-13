@@ -36,10 +36,21 @@ Usage
 -----
 
 Go to [OBS.Ninja Trampoline](https://rse.github.io/obs-ninja-trampoline/)
-(or your own website hosting OBS.Ninja Trampoline) and fill out
-the form. Copy the "Source URL" (or press "OPEN") for accessing
-[OBS.Ninja](https://obs.ninja) with the underlying complex parameters based
-on your OBS.Ninja Trampoline simple form parameters.
+(or your own website hosting OBS.Ninja Trampoline) and just use the form.
+The form fields are:
+
+- **Room Id**:
+
+- **Room Password**:
+
+- **Source URL**:
+  This is your entry point.
+  Copy this URL for accesssing OBS.Ninja through the clean, intuitive
+  and stable parameters of OBS.Ninja Trampoline.
+
+- **Target URL**:
+  This is the redirection URL, based on the underlying complex parameters
+  of OBS.Ninja. This is shown just for comprehension purposes.
 
 License
 -------
