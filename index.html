@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<!--
+**
+**  OBS.Ninja Trampoline
+**  Copyright (c) 2021 Dr. Ralf S. Engelschall <rse@engelschall.com>
+**  Licensed under MIT license <https://spdx.org/licenses/MIT.html>
+**
+-->
+<html>
+    <head>
+        <title>OBS.Ninja Trampoline</title>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <style type="text/css">
+            html, body {
+                margin: 0;
+                width:  100vw;
+                height: 100vh;
+                background-color: transparent;
+            }
+            body {
+                width:  100vw;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: #c0c0c0;
+            }
+            .box {
+                background: linear-gradient(#444444, #000000);
+                color: #ffffff;
+                font-family: sans-serif;
+                font-size: 11pt;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 20px 30px 20px 30px;
+                border-radius: 8px;
+                box-shadow: 0px 4px 8px #666666;
+            }
+            .box .row {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                margin-bottom: 4px;
+            }
+            .box .desc {
+                width: 600px;
+                margin-bottom: 12px;
+                color: #e0e0e0;
+                text-align: justify;
+                font-size: 10pt;
+            }
+            .box a {
+                text-decoration: none;
+                color: #ffffff;
+            }
+            .box .title {
+                color: #ffffff;
+                font-weight: bold;
+                margin-right: 8px;
+                width: 100%;
+                margin-bottom: 8px;
+                font-size: 150%;
+            }
+            .box .label {
+                margin-right: 4px;
+                width: calc(140px - 4px);
+                color: #e0e0e0;
+            }
+            .box .field {
+                width: 460px;
+            }
+            .box input[type='text'] {
+                background-color: #333333;
+                color: #ffffff;
+                border: 1px solid #999999;
+                font-size: 11pt;
+                padding: 2px 8px 2px 8px;
+                width: calc(100% - 16px);
+            }
+            .box input[type='text']:hover,
+            .box input[type='text']:focus {
+                background-color: #336699;
+                outline: none;
+            }
+            .box select {
+                background-color: #333333;
+                color: #ffffff;
+                border: 1px solid #999999;
+                font-size: 11pt;
+                padding: 2px 4px 2px 4px;
+                width: calc(90% - 8px);
+            }
+            .box select:hover,
+            .box select:focus {
+                background-color: #336699;
+                outline: none;
+            }
+            .box #name.disabled {
+                background-color: #666666;
+                border: 1px solid #999999;
+            }
+            .box .url {
+                background-color: #666666;
+                color: #ffffff;
+                border: 1px solid #999999;
+                font-size: 11pt;
+                padding: 2px 4px 2px 4px;
+                width: calc(100% - 8px);
+                font-family: monospace;
+            }
+            .box input[type='submit'] {
+                background-color: #cccccc;
+                font-size: 11pt;
+                border: 1px solid #cccccc;
+                color: #000000;
+                padding: 2px 4px 2px 4px;
+                width: 100%;
+                font-weight: bold;
+                border-radius: 4px;
+                margin: 0;
+                margin-bottom: 4px;
+            }
+            .box input[type='submit']:hover {
+                background-color: #336699;
+                border: 1px solid #336699;
+                color: #ffffff;
+            }
+            .box input[type='submit'].cancel {
+                background-color: #993333;
+                border: 1px solid #993333;
+                color: #ffffff;
+            }
+            .box .foot {
+                text-align: right;
+                width: 600px;
+                margin-top: 8px;
+                font-size: 8pt;
+                color: #a0a0a0;
+            }
+            .box .foot a {
+                color: #c0c0c0;
+            }
+            .box .row.source {
+                margin-top: 16px;
+            }
+        </style>
+        <script type="text/javascript" src="jquery.js"></script>
+    </head>
+    <body>
+        <div class="box">
+            <!-- headline -->
+            <div class="row">
+                <div class="title">OBS.Ninja Trampoline</div>
+            </div>
+
+            <!-- description -->
+            <div class="row">
+                <div class="desc">
+                    <a href="https://obs.ninja">OBS.Ninja</a> is an awesome peer-to-peer (P2P),
+                    <a href="https://webrtc.org/">WebRTC</a> and browser based solution
+                    for bringing the video/audio streams of presenters into the live event
+                    production software <a href="https://obsproject.com">OBS Studio</a>,
+                    with very low latency and high quality.
+                    This form is just a URL simplification
+                    trampoline, i.e., it takes a few intuitive URL parameters and redirects to the
+                    underlying complex technical URL of <a href="https://obs.ninja">OBS.Ninja</a>. It allows
+                    you to control <a href="https://obs.ninja">OBS.Ninja</a> parameters at a central
+                    place while being able to use clean, intuitive and stable URLs for both the
+                    presenters and <a href="https://obsproject.com">OBS Studio</a>.
+                    The underlying <a href="https://obs.ninja">OBS.Ninja</a>
+                    parameter sets are rather opinionated and hard-coded and are intended for
+                    meeting or broadcast sessions with multiple presenters only. Broadcast sessions are
+                    like meetings, where presenters can hear but not see each other,
+                    to reduce the network bandwidth requirements of presenters.
+                </div>
+            </div>
+
+            <!-- input parameters -->
+            <div class="row">
+                <div class="label">Room Id:</div>
+                <div class="field">
+                    <input id="room" class="input-room" type="text" value="example"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">Room Password:</div>
+                <div class="field">
+                    <input id="pass" class="input-password" type="text" value="example"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">Session Mode:</div>
+                <div class="field">
+                    <select id="mode" class="select-mode">
+                        <option value="attendee" selected="selected">attendee (person in meeting)</option>
+                        <option value="sender">sender (person in broadcast)</option>
+                        <option value="follower">follower (person in broadcast, no-video)</option>
+                        <option value="injector">injector (person in broadcast, no-video, no-audio)</option>
+                        <option value="receiver">receiver (OBS Studio Browser Source)</option>
+                        <option value="director">director (person controlling)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">Session Video:</div>
+                <div class="field">
+                    <select id="video" class="select-video">
+                        <option value="1080p60">1080p60 (Full-HD, 1920x1080px, 60fps)</option>
+                        <option value="1080p30">1080p30 (Full-HD, 1920x1080px, 30fps)</option>
+                        <option value="720p60">720p60 (HD, 1280x720px, 60fps)</option>
+                        <option value="720p30" selected="selected">720p30 (HD, 1280x720px, 30fps)</option>
+                        <option value="360p60">360p60 (LD, 640x360px, 60fps)</option>
+                        <option value="360p30">360p30 (LD, 640x360px, 30fps)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">Session Audio:</div>
+                <div class="field">
+                    <select id="audio" class="select-audio">
+                        <option value="stereo" selected="selected">stereo (2 channels)</option>
+                        <option value="mono">mono (1 channel)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">Peer Id:</div>
+                <div class="field">
+                    <input id="peer" class="input-peer" type="text" value="P01"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">Peer Name:</div>
+                <div class="field">
+                    <input id="name" class="input-name" type="text" value="Mr. Example"></input>
+                </div>
+            </div>
+
+            <!-- source URL -->
+            <div class="row source">
+                <div class="label">Source URL:<br/>(your entry point)</div>
+                <div class="field">
+                    <textarea id="url-trampoline" class="url" rows="3" disabled="disabled"></textarea>
+                </div>
+            </div>
+
+            <!-- copy button -->
+            <div class="row">
+                <div class="label"></div>
+                <div class="field">
+                    <input id="copy" type="submit" value="COPY"></input>
+                </div>
+            </div>
+
+            <!-- target URL -->
+            <div class="row">
+                <div class="label">Target URL:<br/>(your redirection)</div>
+                <div class="field">
+                    <textarea id="url-expanded" class="url" rows="6" disabled="disabled"></textarea>
+                </div>
+            </div>
+
+            <!-- open button -->
+            <div class="row">
+                <div class="label"></div>
+                <div class="field">
+                    <input id="open" type="submit" value="OPEN"></input>
+                </div>
+            </div>
+
+            <!-- footer -->
+            <div class="row">
+                <div class="foot">
+                    OBS.Ninja Trampoline 0.9.5 (2021-02-13)<br/>
+                    Copyright &copy; 2021 <a href="mailto:rse@engelschall.com">Dr. Ralf S. Engelschall</a><br/>
+                    Licensed under <a href="https://spdx.org/licenses/MIT.html">MIT license</a>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)
+        const isOBS    = !!window.obsstudio
+        const isIOS    = !!window.navigator.userAgent.match(/(?:iPad|iPhone)/i)
+        if (!(isChrome || isOBS || isIOS))
+            alert("ALERT: Sorry, Google Chrome or a Chromium-based browser is strongly recommended for OBS.Ninja. " +
+                "Firefox, Safari or other browsers are not very well supported. " +
+                "Please start over with Google Chrome!")
+        $(document).ready(() => {
+            /*  generate OBS.Ninja URL  */
+            const makeURL = (room, pass, mode, video, audio, peer, name) => {
+                /*  determine video quality  */
+                let q  = 0
+                let fr = 60
+                let vb = 2500
+                switch (video) {
+                    case "1080p60": q = 0; fr = 60; vb = 5000; break
+                    case "1080p30": q = 0; fr = 30; vb = 2500; break
+                    case "720p60":  q = 1; fr = 60; vb = 2000; break
+                    case "720p30":  q = 1; fr = 30; vb = 1000; break
+                    case "360p60":  q = 2; fr = 60; vb =  500; break
+                    case "360p30":  q = 2; fr = 30; vb =  250; break
+                }
+
+                /*  determine audio quality  */
+                let st = 1
+                let ab = 256
+                switch (audio) {
+                    case "stereo": st = 1; ab = 256; break
+                    case "mono":   st = 0; ab =  96; break
+                }
+
+                /*  generate URL... */
+                let url = "https://obs.ninja/?"
+                const label = encodeURIComponent(name.replace(/_/g, " "))
+                const pw = (pass === "?" ? "&password" : (pass !== "" ? `&password=${pass}` : ""))
+                if (mode === "attendee") {
+                    /*  ...for attendee (meeting)  */
+                    url += `room=${room}` + pw +
+                        `&push=${peer}&ssid=${peer}S&label=${label}` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
+                        "&noheader" +
+                        "&hand&beep&webcam" +
+                        "&ssb"
+                }
+                else if (mode === "sender") {
+                    /*  ...for sender (broadcast)  */
+                    url += `room=${room}` + pw +
+                        `&push=${peer}&ssid=${peer}S&label=${label}` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
+                        "&broadcast&preview" +
+                        "&hand&beep&webcam" +
+                        "&ssb"
+                }
+                else if (mode === "follower") {
+                    /*  ...for follower (broadcast, no-video)  */
+                    url += `room=${room}` + pw +
+                        `&push=${peer}&ssid=${peer}S&label=${label}` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
+                        "&novideo&videodevice=0" +
+                        "&mute" +
+                        "&broadcast&nopreview" +
+                        "&hand&beep&webcam" +
+                        "&obsoff"
+                }
+                else if (mode === "injector") {
+                    /*  ...for injector (broadcast, no-video, no-audio)  */
+                    url += `room=${room}` + pw +
+                        `&push=${peer}&ssid=${peer}S&label=${label}` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
+                        "&novideo&videodevice=0" +
+                        "&noaudio&audiodevice=0" +
+                        "&nosettings&autostart" +
+                        "&broadcast&nopreview" +
+                        "&hand&beep&webcam" +
+                        "&obsoff"
+                }
+                else if (mode === "receiver") {
+                    /*  ...for receiver (OBS Studio, Browser Source)  */
+                    url += `room=${room}` + pw
+                    url += (peer === "AS" ? "&scene=2" : `&view=${peer}&scene`)
+                    if (name !== "")
+                        url += `&label=${label}`
+                    url += `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&stereo=${st}&audiobitrate=${ab}` +
+                        `&bitrate=${vb + ab + 200}` +
+                        "&transparent&cleanoutput"
+                }
+                else if (mode === "director") {
+                    /*  ...for director (event operator)  */
+                    url += `director=${room}` + pw +
+                        `&push=${peer}&ssid=${peer}S&label=${label}` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
+                        "&noheader&cleandirector"
+                }
+                return url
+            }
+
+            /*  update URLs on form changes  */
+            const updateURLs = () => {
+                /*  fetch information of form */
+                const room  = $("#room").val()
+                const pass  = $("#pass").val()
+                const mode  = $("#mode option:selected").val()
+                const video = $("#video option:selected").val()
+                const audio = $("#audio option:selected").val()
+                const peer  = $("#peer").val()
+                const name  = $("#name").val().replace(/\s+/g, "_")
+
+                /*  generate URLs  */
+                let urlTrampoline = window.location.href.replace(/#.*$/, "") +
+                    `#/${room}/${pass}/${mode}/${video}/${audio}/${peer}`
+                if (name !== "")
+                    urlTrampoline += `/${name}`
+                const urlExpanded = makeURL(room, pass, mode, video, audio, peer, name)
+
+                /*  update information in form  */
+                $("#url-trampoline").val(urlTrampoline)
+                $("#url-expanded").val(urlExpanded)
+            }
+            $("#room, #pass, #peer, #name").bind("keyup", () => {
+                updateURLs()
+            })
+            $("#mode, #video, #audio").bind("change", () => {
+                updateURLs()
+            })
+            $("#mode").bind("change", () => {
+                const mode = $("#mode option:selected").val()
+                if (mode === "receiver") {
+                    $("#name").attr("disabled", "disabled")
+                    $("#name").addClass("disabled")
+                    $("#name").val("")
+                }
+                else {
+                    $("#name").removeAttr("disabled")
+                    $("#name").removeClass("disabled")
+                    $("#name").val("Mr. Example")
+                }
+                updateURLs()
+            })
+            updateURLs()
+
+            /*  final open  */
+            const open = () => {
+                const url = $("#url-expanded").val()
+                window.location.href = url
+            }
+
+            /*  countdown to open  */
+            let timer = null
+            let count = 2
+            const startopen = () => {
+                if (timer !== null)
+                    clearTimeout(timer)
+                timer = setInterval(() => {
+                    if (count > 0) {
+                        $("#open").val(`CANCEL OPEN (redirecting in ${count} seconds)`)
+                        if (!$("#open").hasClass("cancel"))
+                            $("#open").addClass("cancel")
+                        count--
+                    }
+                    else {
+                        clearTimeout(timer)
+                        $("#open").val("OPEN").removeClass("cancel")
+                        open()
+                    }
+                }, 1000)
+            }
+
+            /*  initial (page load) or interactive hash-change  */
+            const takehash = () => {
+                /*  take and parse hash  */
+                const hash = window.location.hash
+                const m = hash.match(/^#\/([^/]+)\/([^/]*)\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+))?)?)?)?$/)
+                if (m === null)
+                    return
+                let [ , room, pass, mode, video, audio, peer, name ] = m
+                if (video === undefined) video = "1080p30"
+                if (audio === undefined) audio = "mono"
+                if (peer  === undefined) peer  = ""
+                if (name  === undefined) name  = ""
+
+                /*  canonicalize values  */
+                if (typeof name === "string")
+                    name = name.replace(/_/g, " ")
+
+                /*  fill form inputs  */
+                $("#room").val(room)
+                $("#pass").val(pass)
+                $(`#mode option[value='${mode}']`).attr("selected", "selected").change()
+                $(`#video option[value='${video}']`).attr("selected", "selected").change()
+                $(`#audio option[value='${audio}']`).attr("selected", "selected").change()
+                $("#peer").val(peer)
+                $("#name").val(name)
+
+                /*  update form outputs  */
+                updateURLs()
+
+                /*  start a countdown to open  */
+                startopen()
+            }
+            $(window).bind("hashchange", (ev) => {
+                takehash()
+            })
+            takehash()
+
+            /*  interactive copy  */
+            $("#copy").click((ev) => {
+                 const textarea = $("#url-trampoline").get(0)
+                 var selection = document.getSelection()
+                 var range = document.createRange()
+                 range.selectNode(textarea)
+                 selection.removeAllRanges()
+                 selection.addRange(range)
+                 document.execCommand("copy")
+                 selection.removeAllRanges()
+            })
+
+            /*  interactive open  */
+            $("#open").click((ev) => {
+                if (timer !== null && count >= 0) {
+                    clearTimeout(timer)
+                    timer = null
+                    $("#open").val("OPEN").removeClass("cancel")
+                }
+                else
+                    open()
+                ev.preventDefault()
+            })
+        })
+    </script>
+</html>
