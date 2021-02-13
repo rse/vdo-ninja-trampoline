@@ -40,8 +40,21 @@ Go to [OBS.Ninja Trampoline](https://rse.github.io/obs-ninja-trampoline/)
 The form fields are:
 
 - **Room Id**:
+  This is the room identifier, corresponding to the `room` parameter of
+  OBS.Ninja. It has to be globally unique.
 
 - **Room Password**:
+  This is the room password, corresponding to the `password` parameter of
+  OBS.Ninja. It protects access to your room.
+
+- **Session Mode**:
+  This is the mode the peer is operating under:
+  - **attendee**:
+  - **sender**:
+  - **follower**:
+  - **injector**:
+  - **receiver**:
+  - **director**:
 
 - **Source URL**:
   This is your entry point.
