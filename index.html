@@ -323,7 +323,7 @@
                     /*  ...for attendee (meeting)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&noheader" +
                         "&hand&beep&webcam" +
@@ -333,7 +333,7 @@
                     /*  ...for sender (broadcast)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&broadcast&preview" +
                         "&hand&beep&webcam" +
@@ -343,9 +343,9 @@
                     /*  ...for follower (broadcast, no-video)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
-                        "&novideo&videodevice=0" +
+                        "&videodevice=0" +
                         "&mute" +
                         "&broadcast&nopreview" +
                         "&hand&beep&webcam" +
@@ -355,7 +355,7 @@
                     /*  ...for injector (broadcast, no-video, no-audio)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&novideo&videodevice=0" +
                         "&noaudio&audiodevice=0" +
@@ -367,10 +367,10 @@
                 else if (mode === "receiver") {
                     /*  ...for receiver (OBS Studio, Browser Source)  */
                     url += `room=${room}` + pw
-                    url += (peer === "AS" ? "&scene=2" : `&view=${peer}&scene`)
+                    url += (peer === "AS" ? "&scene=1" : `&view=${peer}&scene`)
                     if (name !== "")
                         url += `&label=${label}`
-                    url += `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                    url += `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}` +
                         `&bitrate=${vb + ab + 200}` +
                         "&transparent&cleanoutput"
@@ -379,7 +379,7 @@
                     /*  ...for director (event operator)  */
                     url += `director=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=vp9` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&noheader&cleandirector"
                 }
