@@ -67,6 +67,9 @@ The form fields are:
   - **receiver**:
     the OBS Studio "Browser Source" receiving the video/audio stream
     of a particular sender.
+  - **collector**:
+    the OBS Studio "Browser Source" receiving the video/audio streams
+    of all senders at once.
   - **director**:
     the director of the online event in order to control
     the senders and interact with the senders.
