@@ -100,6 +100,7 @@
                 background-color: #336699;
                 outline: none;
             }
+            .box #peer.disabled,
             .box #name.disabled {
                 background-color: #666666;
                 border: 1px solid #999999;
@@ -201,7 +202,8 @@
                         <option value="sender">sender (person in broadcast)</option>
                         <option value="follower">follower (person in broadcast, no-video)</option>
                         <option value="injector">injector (person in broadcast, no-video, no-audio)</option>
-                        <option value="receiver">receiver (OBS Studio Browser Source)</option>
+                        <option value="receiver">receiver (OBS Studio Browser Source, single sender)</option>
+                        <option value="collector">collector (OBS Studio Browser Source, all senders)</option>
                         <option value="director">director (person controlling)</option>
                     </select>
                 </div>
@@ -276,7 +278,7 @@
             <!-- footer -->
             <div class="row">
                 <div class="foot">
-                    <a href="https://github.com/rse/obs-ninja-trampoline">OBS.Ninja Trampoline</a> 0.9.9 (2021-02-16)<br/>
+                    <a href="https://github.com/rse/obs-ninja-trampoline">OBS.Ninja Trampoline</a> 0.9.10 (2021-02-19)<br/>
                     Copyright &copy; 2021 <a href="mailto:rse@engelschall.com">Dr. Ralf S. Engelschall</a><br/>
                     Licensed under <a href="https://spdx.org/licenses/MIT.html">MIT license</a>
                 </div>
@@ -319,10 +321,16 @@
                 let url = "https://obs.ninja/?"
                 const label = encodeURIComponent(name.replace(/_/g, " "))
                 const pw = (pass === "?" ? "&password" : (pass !== "" ? `&password=${pass}` : ""))
+                let order = 0
+                if (mode === "attendee" || mode === "sender") {
+                    let m
+                    if ((m = peer.match(/(\d+)/)) !== null)
+                        order = Math.max(0, 100 - parseInt(m[1]))
+                }
                 if (mode === "attendee") {
                     /*  ...for attendee (meeting)  */
                     url += `room=${room}` + pw +
-                        `&push=${peer}&ssid=${peer}S&label=${label}` +
+                        `&push=${peer}&ssid=${peer}S&label=${label}&order=${order}` +
                         `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&noheader" +
@@ -332,7 +340,7 @@
                 else if (mode === "sender") {
                     /*  ...for sender (broadcast)  */
                     url += `room=${room}` + pw +
-                        `&push=${peer}&ssid=${peer}S&label=${label}` +
+                        `&push=${peer}&ssid=${peer}S&label=${label}&order=${order}` +
                         `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&broadcast&preview" +
@@ -373,7 +381,18 @@
                     url += `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}` +
                         `&bitrate=${vb + ab + 200}` +
-                        "&transparent&cleanoutput"
+                        "&transparent&cleanoutput&nocursor"
+                }
+                else if (mode === "collector") {
+                    /*  ...for collector (OBS Studio all-on-one collector)  */
+                    url += `room=${room}` + pw
+                    url += "&scene"
+                    if (name !== "")
+                        url += `&label=${label}`
+                    url += `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        `&stereo=${st}&audiobitrate=${ab}` +
+                        `&bitrate=${vb + ab + 200}` +
+                        "&transparent&cleanoutput&nocursor"
                 }
                 else if (mode === "director") {
                     /*  ...for director (event operator)  */
@@ -399,7 +418,9 @@
 
                 /*  generate URLs  */
                 let urlTrampoline = window.location.href.replace(/#.*$/, "") +
-                    `#/${room}/${pass}/${mode}/${video}/${audio}/${peer}`
+                    `#/${room}/${pass}/${mode}/${video}/${audio}`
+                if (peer !== "")
+                    urlTrampoline += `/${peer}`
                 if (name !== "")
                     urlTrampoline += `/${name}`
                 const urlExpanded = makeURL(room, pass, mode, video, audio, peer, name)
@@ -421,7 +442,18 @@
                     $("#name").addClass("disabled")
                     $("#name").val("")
                 }
+                else if (mode === "collector") {
+                    $("#peer").attr("disabled", "disabled")
+                    $("#peer").addClass("disabled")
+                    $("#peer").val("")
+                    $("#name").attr("disabled", "disabled")
+                    $("#name").addClass("disabled")
+                    $("#name").val("")
+                }
                 else {
+                    $("#peer").removeAttr("disabled")
+                    $("#peer").removeClass("disabled")
+                    $("#peer").val("P01")
                     $("#name").removeAttr("disabled")
                     $("#name").removeClass("disabled")
                     $("#name").val("Mr. Example")
