@@ -100,6 +100,7 @@
                 background-color: #336699;
                 outline: none;
             }
+            .box #effect.disabled,
             .box #peer.disabled,
             .box #name.disabled {
                 background-color: #666666;
@@ -209,7 +210,16 @@
                 </div>
             </div>
             <div class="row">
-                <div class="label">Session Video:</div>
+                <div class="label">Audio Mode:</div>
+                <div class="field">
+                    <select id="audio" class="select-audio">
+                        <option value="stereo" selected="selected">stereo (2 channels)</option>
+                        <option value="mono">mono (1 channel)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">Video Mode:</div>
                 <div class="field">
                     <select id="video" class="select-video">
                         <option value="1080p60">1080p60 (Full-HD, 1920x1080px, 60fps)</option>
@@ -222,11 +232,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="label">Session Audio:</div>
+                <div class="label">Video Effect:</div>
                 <div class="field">
-                    <select id="audio" class="select-audio">
-                        <option value="stereo" selected="selected">stereo (2 channels)</option>
-                        <option value="mono">mono (1 channel)</option>
+                    <select id="effect" class="select-effect">
+                        <option value="none" selected="selected">none</option>
+                        <option value="mirror">horizontal mirror</option>
+                        <option value="bokehblur">bokeh-blur (AI, CPU-intensive)</option>
+                        <option value="greenscreen">green-screen (AI, CPU-intensive)</option>
                     </select>
                 </div>
             </div>
@@ -295,7 +307,15 @@
                 "Please start over with Google Chrome!")
         $(document).ready(() => {
             /*  generate OBS.Ninja URL  */
-            const makeURL = (room, pass, mode, video, audio, peer, name) => {
+            const makeURL = (room, pass, mode, audio, video, effect, peer, name) => {
+                /*  determine audio quality  */
+                let st = 1
+                let ab = 256
+                switch (audio) {
+                    case "stereo": st = 1; ab = 256; break
+                    case "mono":   st = 0; ab =  96; break
+                }
+
                 /*  determine video quality  */
                 let q  = 0
                 let fr = 60
@@ -309,12 +329,12 @@
                     case "360p30":  q = 2; fr = 30; vb =  250; break
                 }
 
-                /*  determine audio quality  */
-                let st = 1
-                let ab = 256
-                switch (audio) {
-                    case "stereo": st = 1; ab = 256; break
-                    case "mono":   st = 0; ab =  96; break
+                /*  determine video effect  */
+                let ve = ""
+                switch (effect) {
+                    case "mirror":      ve = "&effects=2"; break
+                    case "bokehblur":   ve = "&effects=3"; break
+                    case "greenscreen": ve = "&effects=5"; break
                 }
 
                 /*  generate URL... */
@@ -331,7 +351,7 @@
                     /*  ...for attendee (meeting)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}&order=${order}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` + ve +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&noheader" +
                         "&hand&beep&webcam" +
@@ -341,7 +361,7 @@
                     /*  ...for sender (broadcast)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}&order=${order}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` + ve +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&broadcast&preview" +
                         "&hand&beep&webcam" +
@@ -408,22 +428,23 @@
             /*  update URLs on form changes  */
             const updateURLs = () => {
                 /*  fetch information of form */
-                const room  = $("#room").val()
-                const pass  = $("#pass").val()
-                const mode  = $("#mode option:selected").val()
-                const video = $("#video option:selected").val()
-                const audio = $("#audio option:selected").val()
-                const peer  = $("#peer").val()
-                const name  = $("#name").val().replace(/\s+/g, "_")
+                const room   = $("#room").val()
+                const pass   = $("#pass").val()
+                const mode   = $("#mode option:selected").val()
+                const audio  = $("#audio option:selected").val()
+                const video  = $("#video option:selected").val()
+                const effect = $("#effect option:selected").val()
+                const peer   = $("#peer").val()
+                const name   = $("#name").val().replace(/\s+/g, "_")
 
                 /*  generate URLs  */
                 let urlTrampoline = window.location.href.replace(/#.*$/, "") +
-                    `#/${room}/${pass}/${mode}/${video}/${audio}`
+                    `#/${room}/${pass}/${mode}/${audio}/${video}/${effect}`
                 if (peer !== "")
                     urlTrampoline += `/${peer}`
                 if (name !== "")
                     urlTrampoline += `/${name}`
-                const urlExpanded = makeURL(room, pass, mode, video, audio, peer, name)
+                const urlExpanded = makeURL(room, pass, mode, audio, video, effect, peer, name)
 
                 /*  update information in form  */
                 $("#url-trampoline").val(urlTrampoline)
@@ -432,7 +453,7 @@
             $("#room, #pass, #peer, #name").bind("keyup", () => {
                 updateURLs()
             })
-            $("#mode, #video, #audio").bind("change", () => {
+            $("#mode, #video, #audio, #effect").bind("change", () => {
                 updateURLs()
             })
             $("#mode").bind("change", () => {
@@ -457,6 +478,15 @@
                     $("#name").removeAttr("disabled")
                     $("#name").removeClass("disabled")
                     $("#name").val("Mr. Example")
+                }
+                if (mode === "attendee" || mode === "sender") {
+                    $("#effect").removeAttr("disabled")
+                    $("#effect").removeClass("disabled")
+                }
+                else {
+                    $("#effect").attr("disabled", "disabled")
+                    $("#effect").addClass("disabled")
+                    $("#effect").val("none")
                 }
                 updateURLs()
             })
@@ -493,14 +523,15 @@
             const takehash = () => {
                 /*  take and parse hash  */
                 const hash = window.location.hash
-                const m = hash.match(/^#\/([^/]+)\/([^/]*)\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+))?)?)?)?$/)
+                const m = hash.match(/^#\/([^/]+)\/([^/]*)\/([^/]+)\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+))?)?)?)?$/)
                 if (m === null)
                     return
-                let [ , room, pass, mode, video, audio, peer, name ] = m
-                if (video === undefined) video = "1080p30"
-                if (audio === undefined) audio = "mono"
-                if (peer  === undefined) peer  = ""
-                if (name  === undefined) name  = ""
+                let [ , room, pass, mode, audio, video, effect, peer, name ] = m
+                if (audio  === undefined) audio  = "mono"
+                if (video  === undefined) video  = "1080p30"
+                if (effect === undefined) effect = "none"
+                if (peer   === undefined) peer   = ""
+                if (name   === undefined) name   = ""
 
                 /*  canonicalize values  */
                 if (typeof name === "string")
@@ -510,8 +541,9 @@
                 $("#room").val(room)
                 $("#pass").val(pass)
                 $(`#mode option[value='${mode}']`).attr("selected", "selected").change()
-                $(`#video option[value='${video}']`).attr("selected", "selected").change()
                 $(`#audio option[value='${audio}']`).attr("selected", "selected").change()
+                $(`#video option[value='${video}']`).attr("selected", "selected").change()
+                $(`#effect option[value='${effect}']`).attr("selected", "selected").change()
                 $("#peer").val(peer)
                 $("#name").val(name)
 
