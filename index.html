@@ -222,12 +222,20 @@
                 <div class="label">Video Mode:</div>
                 <div class="field">
                     <select id="video" class="select-video">
-                        <option value="1080p60">1080p60 (Full-HD, 1920x1080px, 60fps)</option>
-                        <option value="1080p30">1080p30 (Full-HD, 1920x1080px, 30fps)</option>
-                        <option value="720p60">720p60 (HD, 1280x720px, 60fps)</option>
-                        <option value="720p30" selected="selected">720p30 (HD, 1280x720px, 30fps)</option>
-                        <option value="360p60">360p60 (LD, 640x360px, 60fps)</option>
-                        <option value="360p30">360p30 (LD, 640x360px, 30fps)</option>
+                        <option value="1080p60">1080p60 (Full-HD, 1920x1080px, 60fps, dynamic/smart)</option>
+                        <option value="1080p30">1080p30 (Full-HD, 1920x1080px, 30fps, dynamic/smart)</option>
+                        <option value="720p60">720p60 (HD, 1280x720px, 60fps, dynamic/smart)</option>
+                        <option value="720p30" selected="selected">720p30 (HD, 1280x720px, 30fps, dynamic/smart)</option>
+                        <option value="576p60">576p60 (SD, 1024x576px, 60fps, static/fixed)</option>
+                        <option value="576p30">576p30 (SD, 1024x576px, 30fps, static/fixed)</option>
+                        <option value="480p60">480p60 (854x480px, 60fps, static/fixed)</option>
+                        <option value="480p30">480p30 (854x480px, 30fps, static/fixed)</option>
+                        <option value="360p60">360p60 (640x360px, 60fps, dynamic/smart)</option>
+                        <option value="360p30">360p30 (640x360px, 30fps, dynamic/smart)</option>
+                        <option value="240p60">240p60 (426x240px, 60fps, static/fixed)</option>
+                        <option value="240p30">240p30 (426x240px, 30fps, static/fixed)</option>
+                        <option value="144p60">144p60 (256x144px, 60fps, static/fixed)</option>
+                        <option value="144p30">144p30 (256x144px, 30fps, static/fixed)</option>
                     </select>
                 </div>
             </div>
@@ -317,7 +325,9 @@
                 }
 
                 /*  determine video quality  */
-                let q  = 0
+                let w  = -1
+                let h  = -1
+                let q  = -1
                 let fr = 60
                 let vb = 2500
                 switch (video) {
@@ -325,8 +335,16 @@
                     case "1080p30": q = 0; fr = 30; vb = 2500; break
                     case "720p60":  q = 1; fr = 60; vb = 2000; break
                     case "720p30":  q = 1; fr = 30; vb = 1000; break
+                    case "576p60":         fr = 60; vb = 1500; w = 1024; h = 576; break
+                    case "576p30":         fr = 30; vb =  750; w = 1024; h = 576; break
+                    case "480p60":         fr = 60; vb = 1000; w =  854; h = 480; break
+                    case "480p30":         fr = 30; vb =  500; w =  854; h = 480; break
                     case "360p60":  q = 2; fr = 60; vb =  500; break
                     case "360p30":  q = 2; fr = 30; vb =  250; break
+                    case "240p60":         fr = 60; vb =  250; w =  426; h = 240; break
+                    case "240p30":         fr = 30; vb =  125; w =  426; h = 240; break
+                    case "144p60":         fr = 60; vb =  125; w =  256; h = 144; break
+                    case "144p30":         fr = 30; vb =   75; w =  256; h = 144; break
                 }
 
                 /*  determine video effect  */
@@ -351,7 +369,8 @@
                     /*  ...for attendee (meeting)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}&order=${order}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` + ve +
+                        (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
+                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` + ve +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&noheader" +
                         "&hand&beep&webcam" +
@@ -361,7 +380,8 @@
                     /*  ...for sender (broadcast)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}&order=${order}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` + ve +
+                        (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
+                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` + ve +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&broadcast&preview" +
                         "&hand&beep&webcam" +
@@ -371,7 +391,8 @@
                     /*  ...for follower (broadcast, no-video)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
+                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&videodevice=0" +
                         "&mute" +
@@ -383,7 +404,8 @@
                     /*  ...for injector (broadcast, no-video, no-audio)  */
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
+                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&novideo&videodevice=0" +
                         "&noaudio&audiodevice=0" +
@@ -398,7 +420,8 @@
                     url += (peer === "AS" ? "&scene=1" : `&view=${peer}&scene`)
                     if (name !== "")
                         url += `&label=${label}`
-                    url += `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                    url += (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
+                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}` +
                         `&bitrate=${vb + ab + 200}` +
                         "&transparent&cleanoutput&nocursor"
@@ -409,7 +432,8 @@
                     url += "&scene"
                     if (name !== "")
                         url += `&label=${label}`
-                    url += `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                    url += (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
+                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}` +
                         `&bitrate=${vb + ab + 200}` +
                         "&transparent&cleanoutput&nocursor"
@@ -418,7 +442,8 @@
                     /*  ...for director (event operator)  */
                     url += `director=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
-                        `&quality=${q}&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
+                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&noheader&cleandirector"
                 }
