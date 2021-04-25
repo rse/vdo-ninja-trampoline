@@ -222,20 +222,32 @@
                 <div class="label">Video Mode:</div>
                 <div class="field">
                     <select id="video" class="select-video">
-                        <option value="1080p60">1080p60 (Full-HD, 1920x1080px, 60fps, dynamic/smart)</option>
-                        <option value="1080p30">1080p30 (Full-HD, 1920x1080px, 30fps, dynamic/smart)</option>
-                        <option value="720p60">720p60 (HD, 1280x720px, 60fps, dynamic/smart)</option>
-                        <option value="720p30" selected="selected">720p30 (HD, 1280x720px, 30fps, dynamic/smart)</option>
-                        <option value="576p60">576p60 (SD, 1024x576px, 60fps, static/fixed)</option>
-                        <option value="576p30">576p30 (SD, 1024x576px, 30fps, static/fixed)</option>
-                        <option value="480p60">480p60 (854x480px, 60fps, static/fixed)</option>
-                        <option value="480p30">480p30 (854x480px, 30fps, static/fixed)</option>
-                        <option value="360p60">360p60 (640x360px, 60fps, dynamic/smart)</option>
-                        <option value="360p30">360p30 (640x360px, 30fps, dynamic/smart)</option>
-                        <option value="240p60">240p60 (426x240px, 60fps, static/fixed)</option>
-                        <option value="240p30">240p30 (426x240px, 30fps, static/fixed)</option>
-                        <option value="144p60">144p60 (256x144px, 60fps, static/fixed)</option>
-                        <option value="144p30">144p30 (256x144px, 30fps, static/fixed)</option>
+                        <option value="1080p">1080p (Full-HD, 1920x1080px, dynamic/smart)</option>
+                        <option value="720p" selected="selected">720p (HD, 1280x720px, dynamic/smart)</option>
+                        <option value="576p">576p (SD, 1024x576px, tatic/fixed)</option>
+                        <option value="480p">480p (854x480px, static/fixed)</option>
+                        <option value="360p">360p (640x360px, dynamic/smart)</option>
+                        <option value="240p">240p (426x240px, static/fixed)</option>
+                        <option value="144p">144p (256x144px, static/fixed)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">Video Framerate:</div>
+                <div class="field">
+                    <select id="fps" class="select-fps">
+                        <option value="10">10.00 fps (1/3 Standard)</option>
+                        <option value="15">15.00 fps (1/2 Standard)</option>
+                        <option value="20">20.00 fps (2/3 Standard)</option>
+                        <option value="24">24.00 fps (Cinema)</option>
+                        <option value="25">25.00 fps (PAL)</option>
+                        <option value="29.97">29.97 fps (NTSC)</option>
+                        <option value="30" selected="selected">30.00 fps (Standard)</option>
+                        <option value="40">40.00 fps (4/3 Standard)</option>
+                        <option value="48">48.00 fps (2x Cinema)</option>
+                        <option value="50">50.00 fps (2x PAL)</option>
+                        <option value="59.94">59.94 fps (2x NTSC)</option>
+                        <option value="60">60.00 fps (2x Standard)</option>
                     </select>
                 </div>
             </div>
@@ -298,7 +310,7 @@
             <!-- footer -->
             <div class="row">
                 <div class="foot">
-                    <a href="https://github.com/rse/obs-ninja-trampoline">OBS.Ninja Trampoline</a> 0.9.11 (2021-03-17)<br/>
+                    <a href="https://github.com/rse/obs-ninja-trampoline">OBS.Ninja Trampoline</a> 0.9.12 (2021-04-25)<br/>
                     Copyright &copy; 2021 <a href="mailto:rse@engelschall.com">Dr. Ralf S. Engelschall</a><br/>
                     Licensed under <a href="https://spdx.org/licenses/MIT.html">MIT license</a>
                 </div>
@@ -315,7 +327,7 @@
                 "Please start over with Google Chrome!")
         $(document).ready(() => {
             /*  generate OBS.Ninja URL  */
-            const makeURL = (room, pass, mode, audio, video, effect, peer, name) => {
+            const makeURL = (room, pass, mode, audio, video, fps, effect, peer, name) => {
                 /*  determine audio quality  */
                 let st = 1
                 let ab = 256
@@ -324,27 +336,19 @@
                     case "mono":   st = 0; ab =  96; break
                 }
 
-                /*  determine video quality  */
+                /*  determine video resolution  */
                 let w  = -1
                 let h  = -1
                 let q  = -1
-                let fr = 60
                 let vb = 2500
                 switch (video) {
-                    case "1080p60": q = 0; fr = 60; vb = 5000; break
-                    case "1080p30": q = 0; fr = 30; vb = 2500; break
-                    case "720p60":  q = 1; fr = 60; vb = 2000; break
-                    case "720p30":  q = 1; fr = 30; vb = 1000; break
-                    case "576p60":         fr = 60; vb = 1500; w = 1024; h = 576; break
-                    case "576p30":         fr = 30; vb =  750; w = 1024; h = 576; break
-                    case "480p60":         fr = 60; vb = 1000; w =  854; h = 480; break
-                    case "480p30":         fr = 30; vb =  500; w =  854; h = 480; break
-                    case "360p60":  q = 2; fr = 60; vb =  500; break
-                    case "360p30":  q = 2; fr = 30; vb =  250; break
-                    case "240p60":         fr = 60; vb =  250; w =  426; h = 240; break
-                    case "240p30":         fr = 30; vb =  125; w =  426; h = 240; break
-                    case "144p60":         fr = 60; vb =  125; w =  256; h = 144; break
-                    case "144p30":         fr = 30; vb =   75; w =  256; h = 144; break
+                    case "1080p": q = 0; vb = 2500; break
+                    case "720p":  q = 1; vb = 1000; break
+                    case "576p":         vb =  750; w = 1024; h = 576; break
+                    case "480p":         vb =  500; w =  854; h = 480; break
+                    case "360p":  q = 2; vb =  250; break
+                    case "240p":         vb =  125; w =  426; h = 240; break
+                    case "144p":         vb =   75; w =  256; h = 144; break
                 }
 
                 /*  determine video effect  */
@@ -352,7 +356,7 @@
                 switch (effect) {
                     case "mirror":      ve = "&effects=2"; break
                     case "bokehblur":   ve = "&effects=3"; break
-                    case "greenscreen": ve = "&effects=5"; break
+                    case "greenscreen": ve = "&effects=4"; break
                 }
 
                 /*  generate URL... */
@@ -370,7 +374,7 @@
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}&order=${order}` +
                         (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
-                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` + ve +
+                        `&framerate=${fps}&videobitrate=${vb}&codec=h264` + ve +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&noheader" +
                         "&hand&beep&webcam" +
@@ -381,7 +385,7 @@
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}&order=${order}` +
                         (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
-                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` + ve +
+                        `&framerate=${fps}&videobitrate=${vb}&codec=h264` + ve +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&broadcast&preview" +
                         "&hand&beep&webcam" +
@@ -392,7 +396,7 @@
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
                         (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
-                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        `&framerate=${fps}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&videodevice=0" +
                         "&mute" +
@@ -405,7 +409,7 @@
                     url += `room=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
                         (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
-                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        `&framerate=${fps}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&novideo&videodevice=0" +
                         "&noaudio&audiodevice=0" +
@@ -421,7 +425,7 @@
                     if (name !== "")
                         url += `&label=${label}`
                     url += (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
-                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        `&framerate=${fps}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}` +
                         `&bitrate=${vb + ab + 200}` +
                         "&transparent&cleanoutput&nocursor"
@@ -433,7 +437,7 @@
                     if (name !== "")
                         url += `&label=${label}`
                     url += (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
-                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        `&framerate=${fps}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}` +
                         `&bitrate=${vb + ab + 200}` +
                         "&transparent&cleanoutput&nocursor"
@@ -443,7 +447,7 @@
                     url += `director=${room}` + pw +
                         `&push=${peer}&ssid=${peer}S&label=${label}` +
                         (q !== -1 ? `&quality=${q}` : `&width=${w}&height=${h}`) +
-                        `&framerate=${fr}&videobitrate=${vb}&codec=h264` +
+                        `&framerate=${fps}&videobitrate=${vb}&codec=h264` +
                         `&stereo=${st}&audiobitrate=${ab}&aec=1&ag=0&dn=1&lowcut=80` +
                         "&noheader&cleandirector"
                 }
@@ -458,18 +462,19 @@
                 const mode   = $("#mode option:selected").val()
                 const audio  = $("#audio option:selected").val()
                 const video  = $("#video option:selected").val()
+                const fps    = $("#fps option:selected").val()
                 const effect = $("#effect option:selected").val()
                 const peer   = $("#peer").val()
                 const name   = $("#name").val().replace(/\s+/g, "_")
 
                 /*  generate URLs  */
                 let urlTrampoline = window.location.href.replace(/#.*$/, "") +
-                    `#/${room}/${pass}/${mode}/${audio}/${video}/${effect}`
+                    `#/${room}/${pass}/${mode}/${audio}/${video}/${fps}/${effect}`
                 if (peer !== "")
                     urlTrampoline += `/${peer}`
                 if (name !== "")
                     urlTrampoline += `/${name}`
-                const urlExpanded = makeURL(room, pass, mode, audio, video, effect, peer, name)
+                const urlExpanded = makeURL(room, pass, mode, audio, video, fps, effect, peer, name)
 
                 /*  update information in form  */
                 $("#url-trampoline").val(urlTrampoline)
@@ -478,7 +483,7 @@
             $("#room, #pass, #peer, #name").bind("keyup", () => {
                 updateURLs()
             })
-            $("#mode, #video, #audio, #effect").bind("change", () => {
+            $("#mode, #audio, #video, #fps, #effect").bind("change", () => {
                 updateURLs()
             })
             $("#mode").bind("change", () => {
@@ -548,12 +553,13 @@
             const takehash = () => {
                 /*  take and parse hash  */
                 const hash = window.location.hash
-                const m = hash.match(/^#\/([^/]+)\/([^/]*)\/([^/]+)\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+))?)?)?)?$/)
+                const m = hash.match(/^#\/([^/]+)\/([^/]*)\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+)(?:\/([^/]+))?)?)?)?)?)?$/)
                 if (m === null)
                     return
-                let [ , room, pass, mode, audio, video, effect, peer, name ] = m
+                let [ , room, pass, mode, audio, video, fps, effect, peer, name ] = m
                 if (audio  === undefined) audio  = "mono"
-                if (video  === undefined) video  = "1080p30"
+                if (video  === undefined) video  = "1080p"
+                if (fps    === undefined) fps    = "30"
                 if (effect === undefined) effect = "none"
                 if (peer   === undefined) peer   = ""
                 if (name   === undefined) name   = ""
@@ -568,6 +574,7 @@
                 $(`#mode option[value='${mode}']`).attr("selected", "selected").change()
                 $(`#audio option[value='${audio}']`).attr("selected", "selected").change()
                 $(`#video option[value='${video}']`).attr("selected", "selected").change()
+                $(`#fps option[value='${fps}']`).attr("selected", "selected").change()
                 $(`#effect option[value='${effect}']`).attr("selected", "selected").change()
                 $("#peer").val(peer)
                 $("#name").val(name)
