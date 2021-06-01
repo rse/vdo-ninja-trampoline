@@ -5,20 +5,20 @@
 About
 -----
 
-[VDO.Ninja](https://obs.ninja) is an awesome peer-to-peer (P2P),
-[WebRTC](https://webrtc.org/) and browser based solution for bringing
-the video/audio streams of presenters into the live event production
-software [OBS Studio](https://obsproject.com) with very low latency and
-high quality.
+[VDO.Ninja](https://vdo.ninja) (formerly OBS.Ninja) is an awesome
+peer-to-peer (P2P), [WebRTC](https://webrtc.org/) and browser based
+solution for bringing the video/audio streams of presenters into the
+live event production software [OBS Studio](https://obsproject.com) with
+very low latency and high quality.
 
 This form is just a URL simplification trampoline, i.e., it takes a
 few intuitive URL parameters and redirects to the underlying complex
-technical URL of [VDO.Ninja](https://obs.ninja). It allows you to
-control [VDO.Ninja](https://obs.ninja) parameters at a central place
+technical URL of [VDO.Ninja](https://vdo.ninja). It allows you to
+control [VDO.Ninja](https://vdo.ninja) parameters at a central place
 while being able to use clean, intuitive and stable URLs for both the
 presenters and [OBS Studio](https://obsproject.com).
 
-The underlying [VDO.Ninja](https://obs.ninja) parameter sets are rather
+The underlying [VDO.Ninja](https://vdo.ninja) parameter sets are rather
 opinionated and hard-coded and are intended for meeting or broadcast
 sessions with multiple presenters only. Broadcast sessions are like
 meetings, where presenters can hear but not see each other, to reduce
