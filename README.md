@@ -1,11 +1,11 @@
 
-[OBS.Ninja Trampoline](https://rse.github.io/obs-ninja-trampoline/)
+[VDO.Ninja Trampoline](https://rse.github.io/vdo-ninja-trampoline/)
 ===================================================================
 
 About
 -----
 
-[OBS.Ninja](https://obs.ninja) is an awesome peer-to-peer (P2P),
+[VDO.Ninja](https://obs.ninja) is an awesome peer-to-peer (P2P),
 [WebRTC](https://webrtc.org/) and browser based solution for bringing
 the video/audio streams of presenters into the live event production
 software [OBS Studio](https://obsproject.com) with very low latency and
@@ -13,12 +13,12 @@ high quality.
 
 This form is just a URL simplification trampoline, i.e., it takes a
 few intuitive URL parameters and redirects to the underlying complex
-technical URL of [OBS.Ninja](https://obs.ninja). It allows you to
-control [OBS.Ninja](https://obs.ninja) parameters at a central place
+technical URL of [VDO.Ninja](https://obs.ninja). It allows you to
+control [VDO.Ninja](https://obs.ninja) parameters at a central place
 while being able to use clean, intuitive and stable URLs for both the
 presenters and [OBS Studio](https://obsproject.com).
 
-The underlying [OBS.Ninja](https://obs.ninja) parameter sets are rather
+The underlying [VDO.Ninja](https://obs.ninja) parameter sets are rather
 opinionated and hard-coded and are intended for meeting or broadcast
 sessions with multiple presenters only. Broadcast sessions are like
 meetings, where presenters can hear but not see each other, to reduce
@@ -27,22 +27,22 @@ the network bandwidth requirements of presenters.
 Sneak Preview
 -------------
 
-![OBS.Ninja Trampoline](screenshot.png)
+![VDO.Ninja Trampoline](screenshot.png)
 
 Usage
 -----
 
-Go to [OBS.Ninja Trampoline](https://rse.github.io/obs-ninja-trampoline/)
-(or your own website hosting OBS.Ninja Trampoline) and just use the form.
+Go to [VDO.Ninja Trampoline](https://rse.github.io/vdo-ninja-trampoline/)
+(or your own website hosting VDO.Ninja Trampoline) and just use the form.
 The form fields are:
 
 - **Room Id**:
   This is the room identifier, corresponding to the `room` parameter of
-  OBS.Ninja. It has to be globally unique.
+  VDO.Ninja. It has to be globally unique.
 
 - **Room Password**:
   This is the room password, corresponding to the `password` parameter of
-  OBS.Ninja. It protects access to your room.
+  VDO.Ninja. It protects access to your room.
 
 - **Session Mode**:
   This is the mode the peer is operating under:
@@ -76,35 +76,35 @@ The form fields are:
 
 - **Session Video**:
   This is the video mode the peer is operating under, mapped onto the
-  `quality` and`videobitrate` parameters of OBS.Ninja.
+  `quality` and`videobitrate` parameters of VDO.Ninja.
 
 - **Session Audio**:
   This is the audio mode the peer is operating under, mapped onto the
-  `stereo` and `audiobitrate` parameters of OBS.Ninja.
+  `stereo` and `audiobitrate` parameters of VDO.Ninja.
 
 - **Peer Id**:
   This is the peer identifier, corresponding to the `view` and `push`
-  parameters of OBS.Ninja. It has to be locally unique to the room identifier.
+  parameters of VDO.Ninja. It has to be locally unique to the room identifier.
 
 - **Peer Name**:
   This is the peer name, corresponding to the `label` parameter of
-  OBS.Ninja. It can be an arbitrary name, but should explain the peer.
+  VDO.Ninja. It can be an arbitrary name, but should explain the peer.
   It is displayed to the director only.
 
 - **Source URL**:
   This is your entry point.
-  Copy this URL for accesssing OBS.Ninja through the clean, intuitive
-  and stable parameters of OBS.Ninja Trampoline.
+  Copy this URL for accesssing VDO.Ninja through the clean, intuitive
+  and stable parameters of VDO.Ninja Trampoline.
 
 - **Target URL**:
   This is the redirection URL, based on the underlying complex parameters
-  of OBS.Ninja. This is shown just for comprehension purposes.
+  of VDO.Ninja. This is shown just for comprehension purposes.
 
 Installation
 ------------
 
 There is no installation needed if you are using the Github URL
-https://rse.github.io/obs-ninja-trampoline/. If you want to
+https://rse.github.io/vdo-ninja-trampoline/. If you want to
 use a different URL then copy the files [index.html](index.html)
 and [jquery.js](jquery.js) to your own website.
 
